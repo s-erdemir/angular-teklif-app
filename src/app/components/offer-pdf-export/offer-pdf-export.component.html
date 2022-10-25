@@ -1,0 +1,93 @@
+<nav class="navbar bg-dark mb-2">
+  <div class="container-fluid d-flex justify-content-center">
+    <h2 class="text-light">Fiyat Teklif</h2>
+  </div>
+  <button class="btn btn-outline-light" (click)="generatePdf()">İndir</button>
+</nav>
+
+
+<div id="htmlData">
+  <div id="page1">
+    <h1 class="d-flex justify-content-center"><strong>{{offer.offerName}}</strong></h1>
+    <h3><strong>Hazırlayan:{{prepared.name}}</strong></h3>
+    <h3><strong>Tarih: {{prepared.date | date :'d MMM y'}}</strong></h3>
+    <h5 class="fw-light d-flex justify-content-center">&copy;{{prepared.name}}</h5>
+    <p class="d-flex justify-content-center">Bu döküman içerisinde yer alan tüm bilgi ve içerikler {{prepared.name}}
+      aittir. İzinsiz KOPYALANAMAZ,
+      yazılı ve görsel olarak hiçbir mecrada KULLANILAMAZ.
+    </p>
+  </div>
+
+  <hr>
+
+  <div id="page2" class="beforeClass">
+    <div class="container">
+      <div class="row">
+        <h5>SAYIN YETKİLİ,</h5>
+        <h5>Üst Kurulunuz tarafından talep edilen “Güvenlik Testleri” işi için oluşturulan fiyat teklifi aşağıdaki
+          gibidir.</h5>
+        <table class="table table-bordered border-dark">
+          <thead>
+            <tr class="table-primary border-dark">
+              <th>Ürün Adı</th>
+              <th>Birim Fiyatı</th>
+              <th>Adet</th>
+              <th>Toplam Tutar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of products">
+              <td>{{item.productName}}</td>
+              <td>{{item.unitPrice}}₺</td>
+              <td>{{item.stockAmount}}</td>
+              <td>{{item.unitPrice * item.stockAmount}}₺</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <label>Ara Toplam</label>
+              <td>{{this.z}}₺</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <label>Vergi (%{{totalprice.vat}})</label>
+              <td>{{(totalprice.vat * this.z)/100}}₺</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <label>Toplam</label>
+              <td>{{totalprice.vat + this.z}}₺</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="container">
+      <h3><strong>Teklif Koşulları:</strong></h3>
+      <ul *ngFor="let item of conditions">
+        <li>{{item.requirement}}</li>
+      </ul>
+    </div>
+    <h5 class="fw-light d-flex justify-content-center">&copy;{{prepared.name}}</h5>
+    <p class="d-flex justify-content-center">Bu döküman içerisinde yer alan tüm bilgi ve içerikler {{prepared.name}}
+      aittir. İzinsiz KOPYALANAMAZ,
+      yazılı ve görsel olarak hiçbir mecrada KULLANILAMAZ.
+    </p>
+  </div>
+
+  <hr>
+
+  <div id="page3" class="beforeClass">
+    <div class="container" *ngFor="let item of explanations">
+      <h3 class="fw-bold">{{item.title}}:</h3>
+      <h3>{{item.comment}}</h3>
+    </div>
+    <h5 class="fw-light d-flex justify-content-center">&copy;{{prepared.name}}</h5>
+    <p class="d-flex justify-content-center">Bu döküman içerisinde yer alan tüm bilgi ve içerikler {{prepared.name}}
+      aittir. İzinsiz KOPYALANAMAZ,
+      yazılı ve görsel olarak hiçbir mecrada KULLANILAMAZ.
+    </p>
+  </div>
+</div>

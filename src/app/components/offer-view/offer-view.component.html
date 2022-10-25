@@ -1,0 +1,197 @@
+<nav class="navbar bg-dark">
+  <div class="container-fluid d-flex justify-content-center align-items-center">
+    <h2 class="text-light">{{title}}</h2>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="d-flex justify-content-center">Hazırlayan</h2>
+      <div class="container">
+        <form [formGroup]="preparedForm">
+          <mat-form-field appearance="outline" class="mx-4">
+            <mat-label>Hazırlayan</mat-label>
+            <input matInput formControlName="name" [(ngModel)]="prepared.name">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Tarih</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date" [(ngModel)]="prepared.date">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h2 class="d-flex justify-content-center">Şirket Adı</h2>
+      <form>
+        <mat-form-field appearance="outline" class="d-flex justify-content-center">
+          <mat-label>Şirket Adı</mat-label>
+          <input matInput [formControl]="companyname" [(ngModel)]="customer.companyName">
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+</div>
+
+<mat-divider class="my-3"></mat-divider>
+
+<h2 class="d-flex justify-content-center">Ürün Ekle</h2>
+
+<div class="container d-flex justify-content-center">
+  <form [formGroup]="productsForm">
+    <mat-form-field class="mx-2" appearance="outline">
+      <mat-label>Ürün Adı</mat-label>
+      <input matInput formControlName="productName" [(ngModel)]="product.productName">
+      <mat-error *ngIf="productsForm.get('productName')?.hasError('required')">Ürün adı giriniz...!</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mx-2" appearance="outline">
+      <mat-label>Birim Fiyat</mat-label>
+      <input type="number" matInput formControlName="unitPrice" [(ngModel)]="product.unitPrice">
+      <mat-error *ngIf="productsForm.get('unitPrice')?.hasError('required')">Birim fiyat giriniz...!</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="mx-2" appearance="outline">
+      <mat-label>Adet</mat-label>
+      <input type="number" matInput formControlName="stockAmount" [(ngModel)]="product.stockAmount">
+      <mat-error *ngIf="productsForm.get('stockAmount')?.hasError('required')">Adet giriniz...!</mat-error>
+    </mat-form-field>
+
+    <button class="mx-2" (click)="addProduct()" mat-raised-button color="primary" [disabled]="productsForm.invalid">Ürün
+      Ekle</button>
+  </form>
+</div>
+
+<div class="container">
+  <table class="table table-bordered table-light">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Ürün Adı</th>
+        <th scope="col">Birim Fiyat</th>
+        <th scope="col">Adet</th>
+        <th scope="col">Toplam Tutar</th>
+        <th scope="col">Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of products">
+        <th scope="row">{{item.id}}</th>
+        <td>{{ item.productName }}</td>
+        <td>{{ item.unitPrice }}</td>
+        <td>{{ item.stockAmount }}</td>
+        <td>{{item.stockAmount * item.unitPrice}}₺</td>
+        <td class="d-flex justify-content-center"><button class="btn btn-danger btn-sm" (click)="deleteProduct(item.id)">Sil</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container">
+  <form [formGroup]="totalpriceForm">
+    <mat-form-field appearance="outline">
+      <mat-label>KDV</mat-label>
+      <input type="number" matInput formControlName="vat" [(ngModel)]="totalprice.vat">
+    </mat-form-field>
+    <!-- <mat-form-field appearance="outline">
+      <mat-label>Ara Toplam</mat-label>
+      <input readonly matInput formControlName="total" [(ngModel)]="totalprice.total">
+    </mat-form-field> -->
+  </form>
+</div>
+
+<mat-divider class="my-3"></mat-divider>
+
+
+<h2 class="d-flex justify-content-center">Teklif Koşulları</h2>
+
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <form [formGroup]="conditionForm">
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Koşul</mat-label>
+            <textarea rows="3" matInput formControlName="requirement"></textarea>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" (click)="addRequirement()">Ekle</button>
+      </form>
+    </div>
+    <div class="col-6">
+      <table class="table table-bordered table-light">
+        <thead>
+          <tr>
+            <th class="col-2">#</th>
+            <th class="col-8">Teklif</th>
+            <th class="col-2">Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of conditions">
+            <th scope="row">{{item.id}}</th>
+            <td>{{item.requirement}}</td>
+            <td class="d-flex justify-content-center"><button mat-raised-button color="warn" (click)="deleteRequirement(item.id)">Sil</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<mat-divider class="my-3"></mat-divider>
+
+
+<h2 class="d-flex justify-content-center">Açıklama Ekle</h2>
+<div class="container">
+  <form [formGroup]="explanationForm">
+    <div class="row" style="max-width: 50%;">
+      <mat-form-field appearance="outline">
+        <mat-label>Başlık</mat-label>
+        <input matInput formControlName="title" [(ngModel)]="explanation.title">
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Açıklama</mat-label>
+        <textarea rows="5" matInput formControlName="comment" [(ngModel)]="explanation.comment"></textarea>
+      </mat-form-field>
+    </div>
+    <button mat-raised-button color="primary" (click)="addExplanation()" [disabled]="explanationForm.invalid">Ekle</button>
+  </form>
+</div>
+
+<div class="container my-4">
+  <table class="table table-bordered table-light">
+    <thead>
+      <tr>
+        <th class="col-1 text-center" scope="col">#</th>
+        <th class="col-3 text-center" scope="col">Başlık</th>
+        <th class="col-7 text-center" scope="col">Açıklama</th>
+        <th class="col-1 text-center" scope="col">Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of explanations">
+        <th scope="row" class="text-center">{{item.id}}</th>
+        <td><strong>{{item.title}}</strong></td>
+        <td>{{item.comment}}</td>
+        <th class="text-center"><button mat-raised-button color="warn" (click)="deleteExplanation(item.id)">Sil</button></th>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
+<div class="container pb-5 d-flex justify-content-between">
+  <button routerLink="/offer-list" class="btn btn-danger">Geri Dön</button>
+  <button class="btn btn-success" routerLink="/offer-list" (click)="Route()">{{this.edit}}</button>
+</div>
+
+
